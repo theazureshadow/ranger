@@ -108,6 +108,7 @@ var ranger = (function() {
     RootRange.prototype.slice = function(start, end) {
         return this.driver.slice(start, end);
     };
+
     RootRange.prototype.replace = function(start, end, content) {
         return this.driver.replace(start, end, content);
     };
@@ -125,6 +126,38 @@ var ranger = (function() {
 
     /** @constructor */
     function SubRange() {}
+
+    // Position manipulation and information
+    /** Get or set the start position. */
+    SubRange.prototype.start = function(pos) {};
+    /** Get or set the end position. */
+    SubRange.prototype.end = function(pos) {};
+    /** Get the length of this range. */
+    SubRange.prototype.length = function() {};
+    /** Extend the range to include pos. */
+    SubRange.prototype.include = function(pos) {};
+
+    // Relative position
+    /** Shift the range a certain number of places. Negative shifts left. */
+    SubRange.prototype.move = function(offset) {};
+    /** Shift the start a certain number of places. Negative shifts left. */
+    SubRange.prototype.moveStart = function(offset) {};
+    /** Shift the end a certain number of places. Negative shifts left. */
+    SubRange.prototype.moveEnd = function(offset) {};
+
+    // Content manipulation
+    /** Get or set content. */
+    SubRange.prototype.content = function(content) {};
+    /** Insert text at the beginning of this range. */
+    SubRange.prototype.prepend = function(content) {};
+    /** Insert text at the end of this range. */
+    SubRange.prototype.append = function(content) {};
+    /** Insert text before the beginning of this range. */
+    SubRange.prototype.before = function(content) {};
+    /** Insert text after the end of this range. */
+    SubRange.prototype.after = function(content) {};
+    /** Remove all content from this range. */
+    SubRange.prototype.clear = function() {};
 
 
     // Store a reference to the old ranger object

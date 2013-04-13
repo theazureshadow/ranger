@@ -12,7 +12,8 @@ var ranger = (function() {
 
     /**
      * Calculates a position offset according to the containing range. Handles
-     * negatives as the end, and null or undefined as start
+     * negatives as counting from the end, and null or undefined as start or
+     * end.
      */
     function normalizePosition(position, length, defaultToEnd) {
         if (position === null || typeof position === 'undefined') {
@@ -25,9 +26,17 @@ var ranger = (function() {
         position = Math.min(position, length);
         return position;
     }
+    /**
+     * Calculates a start offset according to the containing range. Handles
+     * negatives as counting from the end, and null or undefined as start.
+     */
     function normalizeStart(position, length) {
         return normalizePosition(position, length, false);
     }
+    /**
+     * Calculates an end offset according to the containing range. Handles
+     * negatives as counting from the end, and null or undefined as end.
+     */
     function normalizeEnd(position, length) {
         return normalizePosition(position, length, true);
     }
@@ -129,21 +138,21 @@ var ranger = (function() {
 
     // Position manipulation and information
     /** Get or set the start position. */
-    SubRange.prototype.start = function(pos) {};
+    SubRange.prototype.start = function(position) {};
     /** Get or set the end position. */
-    SubRange.prototype.end = function(pos) {};
+    SubRange.prototype.end = function(position) {};
     /** Get the length of this range. */
     SubRange.prototype.length = function() {};
-    /** Extend the range to include pos. */
-    SubRange.prototype.include = function(pos) {};
+    /** Extend the range to include position. */
+    SubRange.prototype.include = function(position) {};
 
     // Relative position
     /** Shift the range a certain number of places. Negative shifts left. */
-    SubRange.prototype.move = function(offset) {};
+    SubRange.prototype.shift = function(offset) {};
     /** Shift the start a certain number of places. Negative shifts left. */
-    SubRange.prototype.moveStart = function(offset) {};
+    SubRange.prototype.shiftStart = function(offset) {};
     /** Shift the end a certain number of places. Negative shifts left. */
-    SubRange.prototype.moveEnd = function(offset) {};
+    SubRange.prototype.shiftEnd = function(offset) {};
 
     // Content manipulation
     /** Get or set content. */

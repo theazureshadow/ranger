@@ -109,32 +109,61 @@ var ranger = (function() {
     };
 
 
-    /**
-     * @constructor
-     */
-    function RootRange() {}
+    function AbstractBaseRange() {}
 
-    RootRange.prototype.slice = function(start, end) {
+    AbstractBaseRange.prototype._parent = null;
+
+    AbstractBaseRange.prototype._subRanges = null;
+
+    AbstractBaseRange.prototype.initialize = function(parent) {
+        this._subRanges = [];
+    };
+
+    /**
+     * Creates and links a sub-range.
+     */
+    AbstractBaseRange.prototype.range = function(start, end) {
+        var range = new SubRange(this, start, end);
+        this.linkRange(range);
+        return range;
+    };
+
+    AbstractBaseRange.prototype.linkRange = function(range) {};
+
+    AbstractBaseRange.prototype.unlinkRange = function(range) {};
+
+
+    /** @constructor */
+    function ContentRange() {
+        this.initialize();
+    }
+
+    ContentRange.prototype.slice = function(start, end) {
         return this.driver.slice(start, end);
     };
 
-    RootRange.prototype.replace = function(start, end, content) {
+    ContentRange.prototype.replace = function(start, end, content) {
         return this.driver.replace(start, end, content);
     };
 
     /** @type {ContentDriver} */
-    RootRange.prototype.driver = null;
+    ContentRange.prototype.driver = null;
 
 
-    /** @constructor @extends RootRange */
+    /** @constructor @extends ContentRange */
     function StringRange(string) {
         this.driver = new StringContentDriver(string);
     }
-    inherit(StringRange, RootRange);
+    inherit(StringRange, ContentRange);
 
 
     /** @constructor */
-    function SubRange() {}
+    function SubRange(parent, start, end) {
+        this._parent = parent;
+        this._start = start;
+        this._end = end;
+        this.initialize();
+    }
 
     // Position manipulation and information
     /** Get or set the start position. */
